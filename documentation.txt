@@ -1,0 +1,3 @@
+cd ModifyDataForInference
+python generateCroppedCSV.py
+python makeHMPImages.py

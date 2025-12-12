@@ -1,0 +1,2 @@
+Image_Index,Predicted_Label,Confidence
+0,Neutral,1.000000
