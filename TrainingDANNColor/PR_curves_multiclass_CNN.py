@@ -261,13 +261,24 @@ def latent_visualization(model_GRL,model_CNN,layer_name,gene_sim_src,gene_sim_ta
 
 #---------------------------------------------------------------------------------------------
 ## main
-path_src="/u/project/ngarud/Garud_lab/DANN/DANNcolor/ProcessingData/ProcessedMayaSims/"
-path_tar="/u/project/ngarud/Garud_lab/DANN/aDNA/ProcessingData/ProcessedDataALL/SortByRowFreq/"
+# 1. Parse System Arguments
+if len(sys.argv) < 4:
+    print("Error: Not enough arguments provided.")
+    print("Usage: python PR_curves_multiclass.py <model_path> <source_dir> <target_dir>")
+    sys.exit(1)
 
+MODEL_PATH = sys.argv[1]
+PATH_SRC_DIR = sys.argv[2]
+PATH_TAR_DIR = sys.argv[3]
 
-path_src_neu= path_src+"Neu_sims.npy"
-path_src_hs= path_src+"HS_sims.npy"
-path_src_ss= path_src+"SS_sims.npy"
+# 2. Construct File Paths dynamically
+# Using os.path.join is safer than string concatenation (+)
+path_src_neu = os.path.join(PATH_SRC_DIR, "Neu_sims.npy")
+path_src_hs = os.path.join(PATH_SRC_DIR, "HS_sims.npy")
+path_src_ss = os.path.join(PATH_SRC_DIR, "SS_sims.npy")
+
+print(f"Loading Source Data from: {PATH_SRC_DIR}")
+print(f"Loading Model from: {MODEL_PATH}")
 
 #Load test data
 #SRC
