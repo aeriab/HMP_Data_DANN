@@ -52,100 +52,113 @@ def plotPRC(precision,recall,pr_auc,class_labels,colors,path):
    plt.savefig(path)
    plt.close()
 
-def roc(class_labels_src,class_labels_tar,y_pred_matched,y_pred_missMatched,y_pred_grl,model_CNN,model_GRL):
+def roc(class_labels_src, class_labels_tar, y_pred_matched, y_pred_missMatched, y_pred_grl=None, model_CNN=None, model_GRL=None):
 
-   #get number of classes in data
-   n_classes_src = 3+1 
+    # get number of classes in data
+    n_classes_src = 3 + 1 
 
-   #combine hard + soft
-   combine_src_sweeps = np.logical_or(class_labels_src[:, 1],class_labels_src[:, 2]).astype(int).reshape(-1, 1)
-   combine_tar_sweeps = np.logical_or(class_labels_tar[:, 1],class_labels_tar[:, 2]).astype(int).reshape(-1, 1)
+    # combine hard + soft
+    combine_src_sweeps = np.logical_or(class_labels_src[:, 1], class_labels_src[:, 2]).astype(int).reshape(-1, 1)
+    combine_tar_sweeps = np.logical_or(class_labels_tar[:, 1], class_labels_tar[:, 2]).astype(int).reshape(-1, 1)
 
-   y_true_src=np.hstack([class_labels_src, combine_src_sweeps])
-   y_true_tar=np.hstack([class_labels_tar, combine_tar_sweeps])
+    y_true_src = np.hstack([class_labels_src, combine_src_sweeps])
+    y_true_tar = np.hstack([class_labels_tar, combine_tar_sweeps])
 
-   # probabilities 
-   combine_matched_sweeps_pred = np.maximum(y_pred_matched[:, 1], y_pred_matched[:, 2]).reshape(-1, 1)
-   combine_missMatched_sweeps_pred = np.maximum(y_pred_missMatched[:, 1], y_pred_missMatched[:, 2]).reshape(-1, 1)
-   combine_grl_sweeps_pred = np.maximum(y_pred_grl[:, 1], y_pred_grl[:, 2]).reshape(-1, 1)
-
-   y_pred_matched_combined = np.hstack([y_pred_matched, combine_matched_sweeps_pred])
-   y_pred_missMatched_combined = np.hstack([y_pred_missMatched, combine_missMatched_sweeps_pred])
-   y_pred_grl_combined = np.hstack([y_pred_grl, combine_grl_sweeps_pred])
-
-
-    #Calcultate roc curves
-   fpr_matched,tpr_matched,roc_auc_matched=compute_roc(y_true_src,y_pred_matched_combined,n_classes_src)
-   fpr_missMatched,tpr_missMatched,roc_auc_missMatched=compute_roc(y_true_tar,y_pred_missMatched_combined,n_classes_src) # is the true for missmathched target data???
-   fpr_grl,tpr_grl,roc_auc_grl=compute_roc(y_true_tar,y_pred_grl_combined,n_classes_src)
-    
-    #PLOT PRC
-   class_labels = ["Neutral", "Hard sweep", "Soft sweep","Sweeps"]
-   colors_CNN = ["#79706E", "#E15759", "#4E79A7","#B07AA1"]
-   colors_GRL = ["#BAB0AC", "#FF9D9A", "#A0CBE8","#D4A6C8"]
-   path =["roc_neutral.png","roc_HS.png","roc_SS.png","roc_sweep.png"]
-   for i in range(n_classes_src):
-      plt.figure(figsize=(8, 6))
-      plt.plot(fpr_matched[i], tpr_matched[i], color=colors_CNN[i],linestyle='-', lw=2, label=f'AUC-PRC matched = {roc_auc_matched[i]:.2f}')
-      plt.plot(fpr_missMatched[i], tpr_missMatched[i], color=colors_CNN[i],linestyle='--', lw=2, label=f'AUC-PRC misspecified= {roc_auc_missMatched[i]:.2f}')
-      plt.plot(fpr_grl[i], tpr_grl[i], color=colors_GRL[i],linestyle='-', lw=2,  label=f'AUC-PRC GRL= {roc_auc_grl[i]:.2f}')
-      plt.xlabel('FPR')
-      plt.ylabel('TPR')
-      plt.title(class_labels[i])
-      plt.legend()
-      plt.savefig(path[i])
-      plt.close()
-    
-
-    
-
-
-def precision_recall(class_labels_src,class_labels_tar,y_pred_matched,y_pred_missMatched,y_pred_grl,model_CNN,model_GRL):   
-
-    #get number of classes in data
-    n_classes_src = 3+1 
-
-    #combine hard + soft
-    combine_src_sweeps = np.logical_or(class_labels_src[:, 1],class_labels_src[:, 2]).astype(int).reshape(-1, 1)
-    combine_tar_sweeps = np.logical_or(class_labels_tar[:, 1],class_labels_tar[:, 2]).astype(int).reshape(-1, 1)
-
-    y_true_src=np.hstack([class_labels_src, combine_src_sweeps])
-    y_true_tar=np.hstack([class_labels_tar, combine_tar_sweeps])
-    
-
-    # probabilities
-    # 
+    # probabilities 
     combine_matched_sweeps_pred = np.maximum(y_pred_matched[:, 1], y_pred_matched[:, 2]).reshape(-1, 1)
     combine_missMatched_sweeps_pred = np.maximum(y_pred_missMatched[:, 1], y_pred_missMatched[:, 2]).reshape(-1, 1)
-    combine_grl_sweeps_pred = np.maximum(y_pred_grl[:, 1], y_pred_grl[:, 2]).reshape(-1, 1)
+    
+    # GRL SECTION COMMENTED OUT
+    # combine_grl_sweeps_pred = np.maximum(y_pred_grl[:, 1], y_pred_grl[:, 2]).reshape(-1, 1)
 
     y_pred_matched_combined = np.hstack([y_pred_matched, combine_matched_sweeps_pred])
     y_pred_missMatched_combined = np.hstack([y_pred_missMatched, combine_missMatched_sweeps_pred])
-    y_pred_grl_combined = np.hstack([y_pred_grl, combine_grl_sweeps_pred])
-
-
-    #Calcultate PR curves
-    precision_matched,recall_matched,pr_auc_matched=compute_precision_recall(y_true_src,y_pred_matched_combined,n_classes_src)
-    precision_missMatched,recall_missMatched,pr_auc_missMatched=compute_precision_recall(y_true_tar,y_pred_missMatched_combined,n_classes_src) # is the true for missmathched target data???
-    precision_grl,recall_grl,pr_auc_grl=compute_precision_recall(y_true_tar,y_pred_grl_combined,n_classes_src)
     
-    #PLOT PRC
-    class_labels = ["Neutral", "Hard sweep", "Soft sweep","Sweeps"]
-    colors_CNN = ["#79706E", "#E15759", "#4E79A7","#B07AA1"]
-    colors_GRL = ["#BAB0AC", "#FF9D9A", "#A0CBE8","#D4A6C8"]
-    path =["auprc_neutral.png","auprc_HS.png","auprc_SS.png","auprc_sweep.png"]
-    for i in range(n_classes_src): #n_classes_src
-      plt.figure(figsize=(8, 6))
-      plt.rcParams.update({'font.size': 16})
-      plt.plot(recall_matched[i], precision_matched[i], color=colors_CNN[i],linestyle='-', lw=2.5, label=f'AUC-PRC matched = {pr_auc_matched[i]:.2f}')
-      plt.plot(recall_missMatched[i], precision_missMatched[i], color=colors_CNN[i],linestyle='--', lw=2.5, label=f'AUC-PRC misspecified= {pr_auc_missMatched[i]:.2f}')
-      plt.plot(recall_grl[i], precision_grl[i], color=colors_GRL[i],linestyle='-', lw=2,  label=f'AUC-PRC GRL= {pr_auc_grl[i]:.2f}')
-      plt.xlabel('Recall')
-      plt.ylabel('Precision')
-      plt.title(class_labels[i])
-      plt.legend()
-      plt.savefig(path[i])
-      plt.close()
+    # GRL SECTION COMMENTED OUT
+    # y_pred_grl_combined = np.hstack([y_pred_grl, combine_grl_sweeps_pred])
+
+    # Calculate roc curves
+    fpr_matched, tpr_matched, roc_auc_matched = compute_roc(y_true_src, y_pred_matched_combined, n_classes_src)
+    fpr_missMatched, tpr_missMatched, roc_auc_missMatched = compute_roc(y_true_tar, y_pred_missMatched_combined, n_classes_src)
+    
+    # GRL SECTION COMMENTED OUT
+    # fpr_grl, tpr_grl, roc_auc_grl = compute_roc(y_true_tar, y_pred_grl_combined, n_classes_src)
+    
+    # PLOT ROC
+    class_labels = ["Neutral", "Hard sweep", "Soft sweep", "Sweeps"]
+    colors_CNN = ["#79706E", "#E15759", "#4E79A7", "#B07AA1"]
+    # colors_GRL = ["#BAB0AC", "#FF9D9A", "#A0CBE8", "#D4A6C8"]
+    path = ["roc_neutral.png", "roc_HS.png", "roc_SS.png", "roc_sweep.png"]
+    
+    for i in range(n_classes_src):
+        plt.figure(figsize=(8, 6))
+        plt.plot(fpr_matched[i], tpr_matched[i], color=colors_CNN[i], linestyle='-', lw=2, label=f'AUC-ROC matched = {roc_auc_matched[i]:.2f}')
+        plt.plot(fpr_missMatched[i], tpr_missMatched[i], color=colors_CNN[i], linestyle='--', lw=2, label=f'AUC-ROC misspecified = {roc_auc_missMatched[i]:.2f}')
+        
+        # GRL PLOTTING COMMENTED OUT
+        # plt.plot(fpr_grl[i], tpr_grl[i], color=colors_GRL[i], linestyle='-', lw=2, label=f'AUC-ROC GRL = {roc_auc_grl[i]:.2f}')
+        
+        plt.xlabel('FPR')
+        plt.ylabel('TPR')
+        plt.title(class_labels[i])
+        plt.legend()
+        plt.savefig(path[i])
+        plt.close()
+
+
+def precision_recall(class_labels_src, class_labels_tar, y_pred_matched, y_pred_missMatched, y_pred_grl=None, model_CNN=None, model_GRL=None):   
+
+    # get number of classes in data
+    n_classes_src = 3 + 1 
+
+    # combine hard + soft
+    combine_src_sweeps = np.logical_or(class_labels_src[:, 1], class_labels_src[:, 2]).astype(int).reshape(-1, 1)
+    combine_tar_sweeps = np.logical_or(class_labels_tar[:, 1], class_labels_tar[:, 2]).astype(int).reshape(-1, 1)
+
+    y_true_src = np.hstack([class_labels_src, combine_src_sweeps])
+    y_true_tar = np.hstack([class_labels_tar, combine_tar_sweeps])
+    
+    # probabilities
+    combine_matched_sweeps_pred = np.maximum(y_pred_matched[:, 1], y_pred_matched[:, 2]).reshape(-1, 1)
+    combine_missMatched_sweeps_pred = np.maximum(y_pred_missMatched[:, 1], y_pred_missMatched[:, 2]).reshape(-1, 1)
+    
+    # GRL SECTION COMMENTED OUT
+    # combine_grl_sweeps_pred = np.maximum(y_pred_grl[:, 1], y_pred_grl[:, 2]).reshape(-1, 1)
+
+    y_pred_matched_combined = np.hstack([y_pred_matched, combine_matched_sweeps_pred])
+    y_pred_missMatched_combined = np.hstack([y_pred_missMatched, combine_missMatched_sweeps_pred])
+    
+    # GRL SECTION COMMENTED OUT
+    # y_pred_grl_combined = np.hstack([y_pred_grl, combine_grl_sweeps_pred])
+
+    # Calculate PR curves
+    precision_matched, recall_matched, pr_auc_matched = compute_precision_recall(y_true_src, y_pred_matched_combined, n_classes_src)
+    precision_missMatched, recall_missMatched, pr_auc_missMatched = compute_precision_recall(y_true_tar, y_pred_missMatched_combined, n_classes_src)
+    
+    # GRL SECTION COMMENTED OUT
+    # precision_grl, recall_grl, pr_auc_grl = compute_precision_recall(y_true_tar, y_pred_grl_combined, n_classes_src)
+    
+    # PLOT PRC
+    class_labels = ["Neutral", "Hard sweep", "Soft sweep", "Sweeps"]
+    colors_CNN = ["#79706E", "#E15759", "#4E79A7", "#B07AA1"]
+    # colors_GRL = ["#BAB0AC", "#FF9D9A", "#A0CBE8", "#D4A6C8"]
+    path = ["auprc_neutral.png", "auprc_HS.png", "auprc_SS.png", "auprc_sweep.png"]
+    
+    for i in range(n_classes_src): 
+        plt.figure(figsize=(8, 6))
+        plt.rcParams.update({'font.size': 16})
+        plt.plot(recall_matched[i], precision_matched[i], color=colors_CNN[i], linestyle='-', lw=2.5, label=f'AUC-PRC matched = {pr_auc_matched[i]:.2f}')
+        plt.plot(recall_missMatched[i], precision_missMatched[i], color=colors_CNN[i], linestyle='--', lw=2.5, label=f'AUC-PRC misspecified = {pr_auc_missMatched[i]:.2f}')
+        
+        # GRL PLOTTING COMMENTED OUT
+        # plt.plot(recall_grl[i], precision_grl[i], color=colors_GRL[i], linestyle='-', lw=2,  label=f'AUC-PRC GRL = {pr_auc_grl[i]:.2f}')
+        
+        plt.xlabel('Recall')
+        plt.ylabel('Precision')
+        plt.title(class_labels[i])
+        plt.legend()
+        plt.savefig(path[i])
+        plt.close()
 
 def confusionMatrix(class_labels,y_pred,output_names):
     #print(gene_sim_test.targets_classifier)
@@ -292,20 +305,13 @@ class_labels_str_src = np.concatenate((np.vstack(["N"]*len(data_neu_src)),np.vst
 
 
 output_preds_matched = np.hstack((class_labels_str_src,y_pred_matched))
-#output_preds_missmatched = np.hstack((class_labels_str_tar,y_pred_missMatched))
-#output_preds_grl = np.hstack((class_labels_str_tar,y_pred_grl[0]))
-
 np.savetxt("model_preds_cnn.txt", output_preds_matched, fmt="%s",delimiter=",")
-#np.savetxt("model_preds_missmatched.txt", output_preds_missmatched, fmt="%s",delimiter=",")
-#np.savetxt("model_preds_grl.txt", output_preds_grl, fmt="%s",delimiter=",")
 
+# Run ROC
+roc(class_labels_src, class_labels_src, y_pred_matched, y_pred_matched, y_pred_grl=None, model_CNN=model_CNN, model_GRL=None)
 
-#roc(class_labels_src,class_labels_tar,y_pred_matched,y_pred_missMatched,y_pred_grl[0],model_CNN,model_GRL) #remove model when I figure out branch names
-#precision_recall(class_labels_src,class_labels_tar,y_pred_matched,y_pred_missMatched,y_pred_grl[0],model_CNN,model_GRL) #remove model when I figure out branch names
+# Run Precision-Recall
+precision_recall(class_labels_src, class_labels_src, y_pred_matched, y_pred_matched, y_pred_grl=None, model_CNN=model_CNN, model_GRL=None)
 
-#confusionMatrix(class_labels_tar,y_pred_grl,model_GRL.output_names)
-#confusionMatrix_CNN(class_labels_tar,y_pred_missMatched)
-
-
-#latent_visualization(model_GRL,model_CNN,"last_hidden_layer_classifier",gene_sim_src_test,gene_sim_tar_test) #last_hidden_layer_classifier feature_extractor
-#latent_visualization_noGRL(model_GRL,model_noGRL,"last_hidden_layer_discriminator",gene_sim_src_test,gene_sim_tar_test) #last_hidden_layer_classifier feature_extractor
+# Comment out confusion matrices and latent viz if they use GRL
+confusionMatrix_CNN(class_labels_src, y_pred_matched)
