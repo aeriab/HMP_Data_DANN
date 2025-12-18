@@ -1,3 +1,6 @@
 cd ModifyDataForInference
 python generateCroppedCSV.py
 python makeHMPImages.py
+
+Useful terminal commands for debugging:
+python -c "import numpy as np; print(np.load('filename.npy').shape)"
