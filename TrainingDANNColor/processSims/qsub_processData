@@ -26,7 +26,11 @@ echo " "
 
 
 #run code
-python processSLiMsims_ManagerScript.py "HS_sims.npy" 100 201
+# "HS_sims.npy" [samples#] [SNPs#]
+# There are 154 "good samples" according to Peter
+# Try many different SNPs# values to see which works best:
+# Attempt 1: [154] [201]; Attempt 2: [154] [250]; Attempt 3: [154] [300]
+python processSLiMsims_ManagerScript.py "HS_sims.npy" 154 201
 
 
 # echo job info on joblog:

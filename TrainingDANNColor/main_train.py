@@ -9,8 +9,10 @@ from CNN_multiclass_data_mergeSims_A100 import *
 import gc
 
 
-model_name='CNN_bw_multiclass_sims_trained'
+model_name='DANN_color_multiclass_sims_trained'
 
+
+# Change path_train to new r bromii-like sims after meeting with Maya
 path_train="/u/project/ngarud/Garud_lab/DANN/DANNcolor/ProcessingData/ProcessedMayaSims/"
 ### LOAD DATA
 # Memory-map the saved file
