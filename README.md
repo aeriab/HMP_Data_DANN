@@ -6,3 +6,5 @@ The csv file of choice is of R. Bromii, and is found at:
 This genetic data is not controlled for population structure, so we only observe the 154 strains that are grouped by population structure. We delete columns from the original csv unless they match one of the column names from "good_samples.txt".
 
 The resulting cropped csv file is under "ModifyDataForInference/cropped_r_bromii_data.csv"
+Run python generateCroppedCSV.py to create this cropped csv.
+

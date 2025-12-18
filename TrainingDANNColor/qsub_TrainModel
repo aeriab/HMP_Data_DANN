@@ -15,7 +15,7 @@
 . /u/local/Modules/default/init/modules.sh
 module load anaconda3
 conda activate base
-conda activate tf_gpu_A100
+conda activate tf_A100_clean
 
 
 # echo job info on joblog:

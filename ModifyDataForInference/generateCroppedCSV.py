@@ -16,4 +16,4 @@ HMP_modified = HMP_modified[HMP_modified["site_type"] != "NC"]
 HMP_modified = HMP_modified.fillna(-1)
 
 
-HMP_modified.to_csv("data_csv_file.csv", index=False)
+HMP_modified.to_csv("cropped_r_bromii_data.csv", index=False)
