@@ -1,34 +1,36 @@
 #!/bin/bash
 
 #$ -cwd
-# error = Merged with joblog
 #$ -o joblog.$JOB_ID
 #$ -j y
-## Edit the line below as needed:
-#$ -l h_rt=10:00:00,h_data=20G #,gpu,A100,gpu_mem=2G,cuda=1 #,gpu,RTX2080Ti,cuda=1    #RTX2080Ti V100  A100
-## Modify the parallel environment
-## and the number of cores as needed:
+#$ -l h_rt=10:00:00,h_data=20G
 #$ -pe shared 1
-# Notify when
 #$ -m a
 
 # load the job environment:
 . /u/local/Modules/default/init/modules.sh
 module load anaconda3
 conda activate base
-conda activate tf_gpu_A100
+conda activate tf_A100_clean
 
-
-# echo job info on joblog:
 echo "Job $JOB_ID started on:   " `hostname -s`
 echo "Job $JOB_ID started on:   " `date `
 echo " "
 
+# --- DEFINE ARGUMENTS HERE ---
+# 1. Path to your saved model
+MODEL_PATH="model_CNNcolor/CNN_color_multiclass_sims_trained"
 
-#run code
-python PR_curves_multiclass.py
+# 2. Path to the Source Data Directory (must contain Neu_sims.npy, HS_sims.npy, etc.)
+SRC_DIR="/u/project/ngarud/Garud_lab/DANN/DANNcolor/ProcessingData/ProcessedMayaSims/"
 
-# echo job info on joblog:
+# 3. Path to the Target Data Directory
+TAR_DIR="/u/project/ngarud/Garud_lab/DANN/aDNA/ProcessingData/ProcessedDataALL/SortByRowFreq/"
+
+# --- EXECUTE PYTHON SCRIPT ---
+# We pass the variables defined above as arguments $1, $2, and $3
+python PR_curves_multiclass.py "$MODEL_PATH" "$SRC_DIR" "$TAR_DIR"
+
 echo "Job $JOB_ID ended on:   " `hostname -s`
 echo "Job $JOB_ID ended on:   " `date `
 echo " "
