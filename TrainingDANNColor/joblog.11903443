@@ -1,0 +1,30 @@
+Job 11903443 started on:    n7427
+Job 11903443 started on:    Fri Dec 19 10:17:03 PST 2025
+ 
+2025-12-19 10:17:08.897585: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1766168229.601843   15211 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1766168229.736743   15211 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-12-19 10:17:10.799536: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-12-19 10:17:30.619240: E external/local_xla/xla/stream_executor/cuda/cuda_driver.cc:152] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+Tensorflow version: 2.18.0
+Keras Version: 3.7.0
+GPU is NOT AVAILABLE
+Num GPUs Available:  0
+Tensorflow version: 2.18.0
+Keras Version: 3.7.0
+GPU is NOT AVAILABLE
+Num GPUs Available:  0
+Loading Source Data from: /u/project/ngarud/Garud_lab/DANN/DANNcolor/ProcessingData/ProcessedMayaSims/
+Loading Model from: CNN100x201/DANN_color_multiclass_sims_trained
+(15000, 100, 201, 2)
+Traceback (most recent call last):
+  File "/u/project/ngarud/baeria/ProcessHMPData/TrainingDANNColor/PR_curves_multiclass_CNN.py", line 298, in <module>
+    model_CNN=load_cnn_model('model_CNNcolor/CNN_color_multiclass_sims_trained')
+  File "/u/project/ngarud/Garud_lab/DANN/Utils/CNN_multiclass_data_mergeSims_A100.py", line 497, in load_cnn_model
+    with open(json_file_name, "r") as json_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'model_CNNcolor/CNN_color_multiclass_sims_trained_model.json'
+Job 11903443 ended on:    n7427
+Job 11903443 ended on:    Fri Dec 19 10:18:00 PST 2025
+ 

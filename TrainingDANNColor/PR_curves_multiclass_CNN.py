@@ -295,7 +295,7 @@ print(gene_sim_src.shape)
 #load models
 
 #CNN only
-model_CNN=load_cnn_model('model_CNNcolor/CNN_color_multiclass_sims_trained')
+model_CNN=load_cnn_model(MODEL_PATH)
 
 
 #Precision Recall
