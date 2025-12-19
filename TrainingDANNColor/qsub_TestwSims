@@ -19,7 +19,7 @@ echo " "
 
 # --- DEFINE ARGUMENTS HERE ---
 # 1. Path to your saved model
-MODEL_PATH="model_CNNcolor/CNN_color_multiclass_sims_trained"
+MODEL_PATH="CNN100x201/DANN_color_multiclass_sims_trained"
 
 # 2. Path to the Source Data Directory (must contain Neu_sims.npy, HS_sims.npy, etc.)
 SRC_DIR="/u/project/ngarud/Garud_lab/DANN/DANNcolor/ProcessingData/ProcessedMayaSims/"
@@ -29,7 +29,7 @@ TAR_DIR="/u/project/ngarud/Garud_lab/DANN/aDNA/ProcessingData/ProcessedDataALL/S
 
 # --- EXECUTE PYTHON SCRIPT ---
 # We pass the variables defined above as arguments $1, $2, and $3
-python PR_curves_multiclass.py "$MODEL_PATH" "$SRC_DIR" "$TAR_DIR"
+python PR_curves_multiclass_CNN.py "$MODEL_PATH" "$SRC_DIR" "$TAR_DIR"
 
 echo "Job $JOB_ID ended on:   " `hostname -s`
 echo "Job $JOB_ID ended on:   " `date `
