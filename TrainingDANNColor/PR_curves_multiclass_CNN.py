@@ -290,6 +290,8 @@ data_ss_src = np.load(path_src_ss, mmap_mode='r')[41000:46000,:,:,:] #0:1]
 
 gene_sim_src = np.concatenate((data_neu_src, data_hs_src,data_ss_src), axis=0)
 
+gene_sim_src = gene_sim_src[:, :, :, 0:1]
+
 print(gene_sim_src.shape)
 #print(gene_sim_tar.shape)
 #load models

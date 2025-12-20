@@ -3,7 +3,7 @@
 #$ -cwd
 #$ -o joblog.$JOB_ID
 #$ -j y
-#$ -l h_rt=10:00:00,h_data=20G
+#$ -l h_rt=10:00:00,h_data=20G  #,gpu,A100
 #$ -pe shared 1
 #$ -m a
 

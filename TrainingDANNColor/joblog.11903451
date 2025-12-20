@@ -1,0 +1,40 @@
+Job 11903451 started on:    n7427
+Job 11903451 started on:    Fri Dec 19 10:22:34 PST 2025
+ 
+2025-12-19 10:22:34.957910: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1766168554.975322   16021 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1766168554.980721   16021 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2025-12-19 10:22:35.002465: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2025-12-19 10:22:42.752864: E external/local_xla/xla/stream_executor/cuda/cuda_driver.cc:152] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+2025-12-19 10:22:50.300051: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 2412000000 exceeds 10% of free system memory.
+Tensorflow version: 2.18.0
+Keras Version: 3.7.0
+GPU is NOT AVAILABLE
+Num GPUs Available:  0
+Tensorflow version: 2.18.0
+Keras Version: 3.7.0
+GPU is NOT AVAILABLE
+Num GPUs Available:  0
+Loading Source Data from: /u/project/ngarud/Garud_lab/DANN/DANNcolor/ProcessingData/ProcessedMayaSims/
+Loading Model from: CNN100x201/DANN_color_multiclass_sims_trained
+(15000, 100, 201, 2)
+Traceback (most recent call last):
+  File "/u/project/ngarud/baeria/ProcessHMPData/TrainingDANNColor/PR_curves_multiclass_CNN.py", line 302, in <module>
+    y_pred_matched = model_CNN.predict(gene_sim_src)
+  File "/u/project/ngarud/baeria/tf_A100_clean/lib/python3.9/site-packages/keras/src/utils/traceback_utils.py", line 122, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/u/project/ngarud/baeria/tf_A100_clean/lib/python3.9/site-packages/keras/src/layers/input_spec.py", line 227, in assert_input_compatibility
+    raise ValueError(
+ValueError: Exception encountered when calling Functional.call().
+
+[1mInput 0 of layer "conv2d" is incompatible with the layer: expected axis -1 of input shape to have value 1, but received input with shape (32, 100, 201, 2)[0m
+
+Arguments received by Functional.call():
+  • inputs=tf.Tensor(shape=(32, 100, 201, 2), dtype=float32)
+  • training=False
+  • mask=None
+Job 11903451 ended on:    n7427
+Job 11903451 ended on:    Fri Dec 19 10:22:53 PST 2025
+ 
