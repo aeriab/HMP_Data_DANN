@@ -3,16 +3,12 @@ import os
 import numpy as np
 import pandas as pd
 
+# Load the CSV file
+df = pd.read_csv('cropped_r_bromii_data.csv')
 
-image_path = './first_test_npy_file.npy'
+# Drop the second column (index 1)
+# axis=1 tells pandas to look for a column, not a row
+df.drop(df.columns[1], axis=1, inplace=True)
 
-single_image = np.load(image_path)
-
-# single_image_array = np.expand_dims(single_image, axis=0)
-
-print(single_image.shape)
-
-# HMP_modified = pd.read_csv("data_csv_file.csv")
-
-# label_column = HMP_modified.iloc[0:, 1]
-# print(label_column)
+# Save the result to a new file
+df.to_csv('bw_cropped_r_bromii_data.csv', index=False)
