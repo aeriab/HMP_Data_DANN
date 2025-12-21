@@ -1,7 +1,7 @@
 import numpy as np
 
 # --- Parameters ---
-input_csv_file = 'cropped_r_bromii_data.csv'  # The name of your input csv file
+input_csv_file = 'bw_cropped_r_bromii_data.csv'  # The name of your input csv file
 output_npy_file = 'r_bromii_sliding.npy' # The name of the .npy file to be saved
 
 # These are the dimensions for your final "image"
@@ -21,7 +21,7 @@ try:
         input_csv_file,
         delimiter=',',
         skiprows=1,
-        dtype=np.int8
+        dtype=np.int32 
     )
 except Exception as e:
     print(f"Error loading file: {e}")
@@ -29,6 +29,9 @@ except Exception as e:
     exit()
 
 print(f"Raw data loaded with shape: {all_data.shape}")
+
+site_ids = all_data[:, 0].astype(np.int32)
+chromosome_data = all_data[:, 1:]
 
 # 2. Select only the chromosome columns (skip the first "site" column)
 # all_data is (e.g., 149768, 51), we want (149768, 50)
@@ -56,25 +59,21 @@ print("Creating sliding windows...")
 # We pre-allocate the final array for memory efficiency instead of appending
 # This is much faster than using all_windows.append()
 final_data = np.zeros((num_images, num_chromosomes, window_height), dtype=np.int8)
+final_site_indices = np.zeros((num_images, window_height), dtype=np.int32)
 
 for i in range(num_images):
-    # Calculate start and end index for the slice
-    start_index = i * slide_step
-    end_index = start_index + window_height
+    start_idx = i * slide_step
+    end_idx = start_idx + window_height
     
-    # Extract the window (shape: [window_height, num_chromosomes])
-    # e.g., (102, 50)
-    window_data = chromosome_data[start_index:end_index, :]
+    # Store the window of site IDs for this specific "image"
+    final_site_indices[i] = site_ids[start_idx:end_idx]
     
-    # 5. Transpose to get the final desired shape (Chromosomes, Sites)
-    # (102, 50) -> (50, 102)
-    window_transposed = window_data.transpose(1, 0)
+    # Store the chromosome data as before
+    final_data[i] = chromosome_data[start_idx:end_idx, :].transpose(1, 0)
 
-    # 6. Add the transposed window to our pre-allocated array
-    final_data[i] = window_transposed
-
-# 7. Save the final .npy file
+# Save both files
 np.save(output_npy_file, final_data)
+np.save('r_bromii_site_map.npy', final_site_indices)
 
 print("---")
 print(f"Successfully saved data with final shape: {final_data.shape}")
