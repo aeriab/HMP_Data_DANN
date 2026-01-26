@@ -11,12 +11,14 @@ import sys
 OUTPUT_FILE = sys.argv[1] # Output numpy file name ex: all_sims.npy
 NUM_SAMPS = int(sys.argv[2]) # Number of samples per simulation
 WINDOW_SIZE = int(sys.argv[3]) # Size of the window
+INPUT_DIR = sys.argv[4]
 
-input_files = sorted(glob.glob("/u/home/b/baeria/project-ngarud/hmp_SLiMulations/dann_slimulations_12080244/hard/*.txt"))  # adjust path if needed
+# input_files = sorted(glob.glob("/u/home/b/baeria/project-ngarud/hmp_SLiMulations/dann_slimulations_12080244/hard/*.txt"))  # adjust path if needed
+input_files = sorted(glob.glob(os.path.join(INPUT_DIR, "*.txt")))
 NUM_SIMS = len(input_files)
 DTYPE = np.float32
 SIM_SHAPE = (NUM_SAMPS, WINDOW_SIZE, 2)
-print(f"Found {NUM_SIMS} simulation files to process.")
+# print(f"Found {NUM_SIMS} simulation files to process.")
 # -------------------------------------------------------------------
 
 # Preallocate array file
@@ -26,7 +28,7 @@ big_array = np.lib.format.open_memmap(
 
 # Loop over input files and process each one
 for i, infile in enumerate(input_files):
-    print(f"Processing file {i + 1}/{NUM_SIMS}: {infile}")
+    # print(f"Processing file {i + 1}/{NUM_SIMS}: {infile}")
     # Call the external script to process the file
     subprocess.run(
         [
@@ -42,4 +44,4 @@ for i, infile in enumerate(input_files):
     )
 
 del big_array  # flush to disk
-print(f"All results saved in {OUTPUT_FILE}")
+# print(f"All results saved in {OUTPUT_FILE}")

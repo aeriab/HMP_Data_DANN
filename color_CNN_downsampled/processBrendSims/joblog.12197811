@@ -1,0 +1,18 @@
+Job 12197811 started on:    n6457
+Job 12197811 started on:    Fri Jan 23 12:48:30 PST 2026
+ 
+Traceback (most recent call last):
+  File "/u/project/ngarud/baeria/Research/ProcessHMPData/color_CNN_downsampled/processBrendSims/processSLiMsims.py", line 364, in <module>
+    mut_type_dict, mut_pos_dict, pos_to_idx_dict, genomes_dict = parse_slim_sims(PATH_SIMS)
+  File "/u/project/ngarud/baeria/Research/ProcessHMPData/color_CNN_downsampled/processBrendSims/processSLiMsims.py", line 23, in parse_slim_sims
+    with open(path_sims, 'r') as file:
+FileNotFoundError: [Errno 2] No such file or directory: '/u/home/b/baeria/project-ngarud/hmp_SLiMulations/dann_slimulations_12080244/soft/rep_376.50.txt'
+Traceback (most recent call last):
+  File "/u/project/ngarud/baeria/Research/ProcessHMPData/color_CNN_downsampled/processBrendSims/processSLiMsims_ManagerScript.py", line 33, in <module>
+    subprocess.run(
+  File "/u/project/ngarud/baeria/tf_A100_clean/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['python', 'processSLiMsims.py', '/u/home/b/baeria/project-ngarud/hmp_SLiMulations/dann_slimulations_12080244/soft/rep_376.50.txt', 'soft_color.npy', '154', '200', '31054']' returned non-zero exit status 1.
+Job 12197811 ended on:    n6457
+Job 12197811 ended on:    Fri Jan 23 23:22:39 PST 2026
+ 
