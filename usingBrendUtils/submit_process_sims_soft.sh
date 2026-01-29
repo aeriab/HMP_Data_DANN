@@ -4,7 +4,7 @@
 #$ -o joblog.$JOB_ID
 #$ -j y
 #$ -m a
-#$ -l h_rt=05:00:00,h_data=10G,highp
+#$ -l h_rt=50:00:00,h_data=50G,highp
 #$ -pe shared 1
 
 # Load the job environment
@@ -23,8 +23,8 @@ echo " "
 # Update these paths to point to your actual utility scripts and data
 HELPER_PATH="/u/project/ngarud/Garud_lab/Brendan/Utils/helper_processSLiMsims.py"
 MANAGER_SCRIPT="/u/project/ngarud/Garud_lab/Brendan/Utils/SLiMsims_to_numpy.py"
-INPUT_FOLDER="/u/home/b/baeria/project-ngarud/hmp_SLiMulations/Jan12/dann_slimulations_12080244/hard/"
-OUTPUT_NAME="hard_sorted_color.npy"
+INPUT_FOLDER="/u/home/b/baeria/project-ngarud/hmp_SLiMulations/Jan12/dann_slimulations_12080244/soft/"
+OUTPUT_NAME="soft_sorted_color.npy"
 
 # --- Run Code ---
 # We pass the manager script arguments: Output, Input, Samps, Window, Channels, Sort
